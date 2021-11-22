@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import users from "../models/UsersModel.js";
 import { emailTest, passwordTest, namesTest } from "./Validation/Validation.js";
 
@@ -64,4 +65,23 @@ const register = async ({ email, password, name, lastName, role, shop }) => {
 
 
 
-export { login, register };
+const updateUser = async ({id, name, lastName, email, role}) => {
+    const data = await users.findOne({ email })
+    const nId = mongoose.Types.ObjectId(id)
+
+    if(name == '' || lastName == '' || email == '' || role == ''){
+        return {error: "No pueden haber campos vacíos"}
+    }else{
+        if(data == null){
+            const user = await users.updateOne({"_id": nId}, {name, lastName, email, role})
+            console.log(user)
+            return {success: "Actualización correcta"}
+        }else{
+                return{error: "El correo ya está en uso"}
+        }
+    }
+    
+}
+
+
+export { login, register, updateUser };

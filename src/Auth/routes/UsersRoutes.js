@@ -1,5 +1,5 @@
 import router from "express";
-import { login, register } from "../controllers/UsersController.js";
+import { login, register, updateUser } from "../controllers/UsersController.js";
 import users from "../models/UsersModel.js";
 
 import { insertProduct } from "../../Products/controllers/CRUDController.js";
@@ -39,6 +39,15 @@ userRoutes.post("/login", async (req, res) => {
     console.log(e);
   }
 });
+
+userRoutes.post("/updateUser", async (req, res) => {
+  try {
+    let data = await updateUser(req.body)
+    res.json(data)
+  } catch (e) {
+    res.json(e)
+  }
+})
 
 
 
